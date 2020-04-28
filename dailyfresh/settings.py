@@ -158,3 +158,6 @@ SESSION_CACHE_ALIAS = 'default'
 
 # 设置使用fdfs文件系统
 DEFAULT_FILE_STORAGE='utils.fdfs.storage.FDFSStorage'
+
+# 指定login页面地址
+LOGIN_URL = '/user/login'

@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse  # 反向解析
 from django.conf import settings
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from user.models import User
 from django.views.generic import View  # 类视图
 from itsdangerous import TimedJSONWebSignatureSerializer as lizer
 from itsdangerous import SignatureExpired
 from celery_tasks.tasks import send_active_email
+from utils.mixin import LoginRequiredMixin
 import re
 
 
@@ -92,7 +93,7 @@ class ActiveView(View):
         except SignatureExpired as e:
             return HttpResponse('激活链接过期')
 
-
+# user/login
 class LoginView(View):
     '''登录'''
 
@@ -129,8 +130,10 @@ class LoginView(View):
                 # 记录用户登录状态
                 login(request, user)
                 
-                # 跳转到首页
-                response = redirect(reverse('goods:index'))
+                # 获取要跳转到的地址,如果为空跳转到首页
+                next_url = request.GET.get('next', reverse('goods:index'))
+                # 重定向跳转到next_url
+                response = redirect(next_url)
                 
                 # 判断是否需要记住用户名
                 remember = request.POST.get('remember')
@@ -150,22 +153,33 @@ class LoginView(View):
             # 用户名密码错误
             return render(request, 'login.html', {'errmsg': '用户名或密码错误'})
 
+# user/logout
+class LogoutView(View):
+    '''退出登录'''
+    def get(self, request):
+        # 清楚session
+        logout(request)
+
+        # 跳转到首页
+        return redirect(reverse('goods:index'))
+
+
 # /user
-class UserInfoView(View):
+class UserInfoView(LoginRequiredMixin, View):
     '''用户中心-信息页'''
     def get(self, request):
         '''显示页面'''
         return render(request, 'user_center_info.html', {'page':'user'})
 
 # /user/order
-class UserOrderView(View):
+class UserOrderView(LoginRequiredMixin, View):
     '''用户中心-订单页'''
     def get(self, request):
         '''显示页面'''
         return render(request, 'user_center_order.html', {'page':'order'})
 
 # /user/site
-class UserSiteView(View):
+class UserSiteView(LoginRequiredMixin, View):
     '''用户中心-地址页'''
     def get(self, request):
         '''显示页面'''
