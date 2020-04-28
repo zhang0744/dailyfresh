@@ -150,41 +150,24 @@ class LoginView(View):
             # 用户名密码错误
             return render(request, 'login.html', {'errmsg': '用户名或密码错误'})
 
+# /user
+class UserInfoView(View):
+    '''用户中心-信息页'''
+    def get(self, request):
+        '''显示页面'''
+        return render(request, 'user_center_info.html', {'page':'user'})
 
-def register(request):
-    # 注册
-    if request.method == 'GET':
-        return render(request, 'register.html')
-    elif request.method == 'POST':
-        # 接受数据
-        username = request.POST.get('user_name')
-        password = request.POST.get('pwd')
-        email = request.POST.get('email')
-        allow = request.POST.get('allow')
-        # 进行数据校验
-        if not all([username, password, email]):
-            return render(request, 'register.html', {'errmsg': '数据不完整'})
-        # 邮箱检验
-        if not re.match(r'^[a-z0-9][\w.-]*@[a-z0-9-]+(\.[a-z]{2,5}){1,2}$', email):
-            return render(request, 'register.html', {'errmsg': '邮箱格式不正确'})
-        #  协议校验
-        if allow != 'on':
-            return render(request, 'register.html', {'errmsg': '请同意协议'})
+# /user/order
+class UserOrderView(View):
+    '''用户中心-订单页'''
+    def get(self, request):
+        '''显示页面'''
+        return render(request, 'user_center_order.html', {'page':'order'})
 
-        # 校验用户名是否重复
-        try:
-            is_user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            # 用户不存在
-            is_user = None
-        if is_user:
-            # 用户名已存在
-            return render(request, 'register.html', {'errmsg': '用户名已存在'})
+# /user/site
+class UserSiteView(View):
+    '''用户中心-地址页'''
+    def get(self, request):
+        '''显示页面'''
+        return render(request, 'user_center_site.html', {'page':'site'})
 
-        # 进行注册业务处理
-        user = User().objects.create_user(username, email, password)  # 创建用户
-        user.is_active = 0  # 设置未激活
-        user.save()
-
-        # 返回应答
-        return redirect(reverse('goods:index'))  # 跳转到首页

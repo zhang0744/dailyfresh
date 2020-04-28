@@ -8,7 +8,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dailyfresh.settings")
 django.setup()
 
 # 创建实例对象
-app = Celery('celery_tasks.tasks', broker='redis://172.168.10.19:6379/1')
+app = Celery('celery_tasks.tasks', broker='redis://127.0.0.1:6379/1')
 
 # 定义任务函数
 @app.task
@@ -19,6 +19,6 @@ def send_active_email(email, username, token):
 	sender = settings.EMAIL_FROM  # 发件人
 	receiver = [email]  # 收件人列表
 	# html格式邮件内容
-	html_message = '<h1>%s, 欢迎成为天天生鲜注册会员</h1>请点击下面链接激活您的账户<br/><a href="http://127.0.0.1:8000/user/active/%s">http://127.0.0.1:8000/user/active/%s</a>'%(username, token, token)
+	html_message = '<h1>%s, 欢迎成为天天生鲜注册会员</h1>请点击下面链接激活您的账户<br/><a href="http://10.32.9.63:80/user/active/%s">10.32.9.63:80/user/active/%s</a>'%(username, token, token)
 	# 发送邮件
 	send_mail(subject, message, sender, receiver, html_message=html_message)
