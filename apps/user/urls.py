@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.contrib.auth.decorators import Login_required
+
 from user.views import RegisterView, ActiveView, LoginView, Logout, UserInfoView, UserOrderView, UserSiteView
 urlpatterns = [
     # url(r'^a$', views.a),
