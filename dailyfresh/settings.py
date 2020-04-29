@@ -114,6 +114,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 设置静态文件目录
+STATIC_ROOT = os.path.join(BASE_DIR,'static')  # 实际环境中静态文件目录设置
 
 # 富文本编辑器配置
 TINYMCE_DEFAULT_CONFIG = {
