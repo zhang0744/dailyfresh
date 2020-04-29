@@ -70,7 +70,7 @@ class RegisterView(View):
             send_active_email.delay(email, username, token)
 
             # 返回应答
-            return redirect(reverse('goods:index'))  # 跳转到首页
+            return redirect(reverse('user:login'))  # 跳转到首页
 
 
 class ActiveView(View):
