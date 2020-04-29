@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from user.views import RegisterView, ActiveView, LoginView, Logout, UserInfoView, UserOrderView, UserSiteView
+from user.views import RegisterView, ActiveView, LoginView, LogoutView, UserInfoView, UserOrderView, UserSiteView
 urlpatterns = [
     # url(r'^a$', views.a),
     # url(r'^register$', views.register, name='register'), #注册
