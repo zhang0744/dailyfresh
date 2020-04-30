@@ -27,7 +27,7 @@ SECRET_KEY = 'oa#j@pm=la3_5o6y4ht!*2s1$bxjd(sju!cq!0tjv^^i7cmy=t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*',]
+ALLOWED_HOSTS = ['*', ]
 
 
 # Application definition
@@ -92,8 +92,8 @@ DATABASES = {
     }
 }
 
-# Django认证系统使用的模型类 
-AUTH_USER_MODEL='user.User'
+# Django认证系统使用的模型类
+AUTH_USER_MODEL = 'user.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -113,7 +113,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR,'static/')  # 实际环境中静态文件目录设置
+# STATIC_ROOT = os.path.join(BASE_DIR,'static/')  # 实际环境中静态文件目录设置
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 设置静态文件目录
 
 # 富文本编辑器配置
@@ -142,10 +142,10 @@ EMAIL_FROM = '天天生鲜<zhanghao_7811@163.com>'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://172.168.10.19:6379/2',
+        'LOCATION': 'redis://127.0.0.1:6379/2',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-             # "PASSWORD": "密码",
+            # "PASSWORD": "密码",
         },
     },
 }
@@ -158,7 +158,7 @@ SESSION_CACHE_ALIAS = 'default'
 
 
 # 设置使用fdfs文件系统
-DEFAULT_FILE_STORAGE='utils.fdfs.storage.FDFSStorage'
+DEFAULT_FILE_STORAGE = 'utils.fdfs.storage.FDFSStorage'
 
 # 指定login页面地址
 LOGIN_URL = '/user/login'
