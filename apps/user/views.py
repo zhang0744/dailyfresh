@@ -213,12 +213,12 @@ class UserSiteView(LoginRequiredMixin, View):
         # 校验数据完整性
         if not all([receiver, addr, phone]):
             # 接受数据不完整 重定向页面并传入错误参数
-            return redirect(reverse(user: site) + "?errmsg=1")
+            return redirect(reverse(user: site)"?errmsg=1")
 
         # 校验手机号
         if not re.match(r'^1[3|4|5|7|8][0-9]{9}$', phone):
             # 手机号格式化不正确 重定向页面并传入错误参数
-            return redirect(reverse(user: site) + "?errmsg=2")
+            return redirect(reverse(user: site)"?errmsg=2")
 
         # 业务处理 保存数据
         # 如果已经有默认收货地址,添加地址is_default为false
