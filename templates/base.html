@@ -49,7 +49,7 @@
 {# 网页搜索栏 #}
 {% block search_bar %}
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+		<a href="{% url 'goods:index' %}" class="logo fl"><img src="images/logo.png"></a>
 		<div class="search_con fl">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
 			<input type="button" class="input_btn fr" name="" value="搜索">
@@ -88,7 +88,16 @@
 {# 网页底部引入文件 #}
 {% block bottomfiles%}
 {% endblock bottomfiles%}
-	
+	<script type="text/javascript">
+        window.onload = function(){
+            a = '{{ errmsg }}';
+            if (a != ''){
+                alert("{{ errmsg }}");
+            }
+        
+    }
+
+</script>
 	
 </body>
 </html>

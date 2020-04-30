@@ -3,18 +3,13 @@ from django.core.urlresolvers import reverse  # 反向解析
 from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from user.models import User
+from user.models import User, Address
 from django.views.generic import View  # 类视图
 from itsdangerous import TimedJSONWebSignatureSerializer as lizer
 from itsdangerous import SignatureExpired
 from celery_tasks.tasks import send_active_email
 from utils.mixin import LoginRequiredMixin
 import re
-
-
-def a(request):
-    return render(request, 'a.html')
-# Create your views here.
 
 
 class RegisterView(View):
@@ -94,12 +89,14 @@ class ActiveView(View):
             return HttpResponse('激活链接过期')
 
 # user/login
+
+
 class LoginView(View):
     '''登录'''
 
     def get(self, request):
         '''显示登录页面'''
-         # 判断是否记住用户名
+        # 判断是否记住用户名
         if 'username' in request.COOKIES:
             username = request.COOKIES.get('username')
             checked = 'checked'
@@ -108,7 +105,7 @@ class LoginView(View):
             checked = ''
 
         # 打开模板
-        return render(request, 'login.html', {'username':username, 'checked':checked})
+        return render(request, 'login.html', {'username': username, 'checked': checked})
 
     def post(self, request):
         '''登录校验'''
@@ -129,18 +126,18 @@ class LoginView(View):
                 # 用户已激活
                 # 记录用户登录状态
                 login(request, user)
-                
+
                 # 获取要跳转到的地址,如果为空跳转到首页
                 next_url = request.GET.get('next', reverse('goods:index'))
                 # 重定向跳转到next_url
                 response = redirect(next_url)
-                
+
                 # 判断是否需要记住用户名
                 remember = request.POST.get('remember')
-                
+
                 if remember == 'on':
                     # 记住用户名
-                    response.set_cookie('username', username, max_age=7*24*3600)
+                    response.set_cookie('username', username, max_age=7 * 24 * 3600)
                 else:
                     response.delete_cookie('username')
 
@@ -154,8 +151,11 @@ class LoginView(View):
             return render(request, 'login.html', {'errmsg': '用户名或密码错误'})
 
 # user/logout
+
+
 class LogoutView(View):
     '''退出登录'''
+
     def get(self, request):
         # 清楚session
         logout(request)
@@ -167,21 +167,74 @@ class LogoutView(View):
 # /user
 class UserInfoView(LoginRequiredMixin, View):
     '''用户中心-信息页'''
+
     def get(self, request):
         '''显示页面'''
-        return render(request, 'user_center_info.html', {'page':'user'})
+        return render(request, 'user_center_info.html', {'page': 'user'})
 
 # /user/order
+
+
 class UserOrderView(LoginRequiredMixin, View):
     '''用户中心-订单页'''
+
     def get(self, request):
         '''显示页面'''
-        return render(request, 'user_center_order.html', {'page':'order'})
+        return render(request, 'user_center_order.html', {'page': 'order'})
 
 # /user/site
+
+
 class UserSiteView(LoginRequiredMixin, View):
     '''用户中心-地址页'''
+
     def get(self, request):
         '''显示页面'''
-        return render(request, 'user_center_site.html', {'page':'site'})
+        user = request.user  # 获取user信息
 
+        try:
+            address = Address.objects.get(user=user, is_default=True)
+        except:
+            # 没有默认地址
+            address = None
+
+        errmsg = request.GET.get('errmsg', '')
+
+        return render(request, 'user_center_site.html', {'page': 'site', 'adderss': adderss, 'errmsg': errmsg})
+
+    def post(self, request):
+        '''添加地址处理'''
+        # 接受数据
+        receiver = request.POST.get('receiver')
+        addr = request.POST.get('addr')
+        zip_code = request.POST.get('zip_code')
+        phone = request.POST.get('phone')
+
+        # 校验数据完整性
+        if not all([receiver, addr, phone]):
+            # 接受数据不完整 重定向页面并传入错误参数
+            return redirect(reverse(user: site) + "?errmsg=数据不完整")
+
+        # 校验手机号
+        if not re.match(r'^1[3|4|5|7|8][0-9]{9}$', phone):
+            # 手机号格式化不正确 重定向页面并传入错误参数
+            return redirect(reverse(user: site) + "?errmsg=手机号不正确")
+
+        # 业务处理 保存数据
+        # 如果已经有默认收货地址,添加地址is_default为false
+        user = request.user  # 获取user信息
+
+        try:
+            address = Address.objects.get(user=user, is_default=True)
+        except:
+            # 没有默认地址
+            address = None
+        if address:
+            is_default = True
+        else:
+            is_default = False
+        # 添加地址
+        Address.objects.create(user=user, receiver=receiver, addr=addr, zip_code=zip_code, phone=phone, is_default=is_default)
+
+        # 返回应答,刷新页面
+        return redirect(reverse('user:site'))
