@@ -92,9 +92,19 @@
         window.onload = function(){
             a = '{{ errmsg }}';
             if (a != ''){
-                alert("{{ errmsg }}");
+                b = a;
+                switch (a){
+                    case 1:
+                        b = '数据不完整'；
+                        back;
+                    case 2:
+                        b = '手机号不正确'；
+                        back;
+                }
+                alert(b);
+
             }
-        
+            
     }
 
 </script>
