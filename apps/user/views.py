@@ -229,10 +229,11 @@ class UserSiteView(LoginRequiredMixin, View):
         except:
             # 没有默认地址
             address = None
+
         if address:
-            is_default = True
-        else:
             is_default = False
+        else:
+            is_default = True
         # 添加地址
         Address.objects.create(user=user, receiver=receiver, addr=addr, zip_code=zip_code, phone=phone, is_default=is_default)
 
