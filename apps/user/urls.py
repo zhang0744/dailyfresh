@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^login$', LoginView.as_view(), name='login'),  # 登录
     url(r'^logout$', LogoutView.as_view(), name='logout'),  # 退出登录
 
-    url(r'^$', UserInfoView.as_view(), name='user'),  # 用户中心-信息页
+    url(r'^user$', UserInfoView.as_view(), name='user'),  # 用户中心-信息页
     url(r'^order$', UserOrderView.as_view(), name='order'),  # 用户中心-订单页
     url(r'^site$', UserSiteView.as_view(), name='site'),  # 用户中心-地址页
 ]
