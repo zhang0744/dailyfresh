@@ -200,7 +200,7 @@ class UserSiteView(LoginRequiredMixin, View):
 
         errmsg = request.GET.get('errmsg', '')
 
-        return render(request, 'user_center_site.html', {'page': 'site', 'adderss': adderss, 'errmsg': errmsg})
+        return render(request, 'user_center_site.html', {'page': 'site', 'address': address, 'errmsg': errmsg})
 
     def post(self, request):
         '''添加地址处理'''
