@@ -167,11 +167,11 @@ class LogoutView(View):
 # /user
 class UserInfoView(LoginRequiredMixin, View):
     '''用户中心-信息页'''
-    '''获取用户信息'''
-    user = request.user
-    address = get_default_address(user)
 
     def get(self, request):
+        '''获取用户信息'''
+        user = request.user
+        address = get_default_address(user)
         '''显示页面'''
         return render(request, 'user_center_info.html', {'page': 'user', 'address': address})
 
