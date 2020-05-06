@@ -171,7 +171,7 @@ class UserInfoView(LoginRequiredMixin, View):
     def get(self, request):
         '''获取用户信息'''
         user = request.user
-        address = address.objects.get_default_address(user)
+        address = Address.objects.get_default_address(user)
         '''显示页面'''
         return render(request, 'user_center_info.html', {'page': 'user', 'address': address})
 
@@ -195,7 +195,7 @@ class UserSiteView(LoginRequiredMixin, View):
         '''显示页面'''
         user = request.user  # 获取user信息
 
-        address = address.objects.get_default_address(user)
+        address = Address.objects.get_default_address(user)
 
         errmsg = request.GET.get('errmsg', '')
 
@@ -223,7 +223,7 @@ class UserSiteView(LoginRequiredMixin, View):
         # 如果已经有默认收货地址,添加地址is_default为false
         user = request.user  # 获取user信息
 
-        address = address.objects.get_default_address(user)
+        address = Address.objects.get_default_address(user)
 
         if address:
             is_default = False
