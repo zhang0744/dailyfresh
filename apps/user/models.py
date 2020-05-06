@@ -28,7 +28,7 @@ class AddressManager(models.Manager):
     def get_default_address(self, user):
         '''获取用户默认地址'''
         try:
-            address = self.objects.get(user=user, is_default=True)
+            address = self.get(user=user, is_default=True)
         except self.DoesNotExist:
             # 没有默认地址
             address = None
@@ -43,6 +43,8 @@ class Address(BaseModel):
     zip_code = models.CharField(max_length=6, null=True, verbose_name='邮政编码')
     phone = models.CharField(max_length=11, verbose_name='联系电话')
     is_default = models.BooleanField(default=False, verbose_name='是否默认')
+
+    objects = AddressManager()
 
     class Meta:
         db_table = 'df_address'
