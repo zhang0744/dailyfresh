@@ -14,12 +14,25 @@ class User(AbstractUser, BaseModel):
     #     serializer = Serializer(settings.SECRET_KEY, 3600)
     #     info = {'confirm': self.id}
     #     token = serializer.dumps(info)
-    #     return token.decode() 
+    #     return token.decode()
 
     class Meta:
         db_table = 'df_user'  # 数据表名
         verbose_name = '用户'
         verbose_name_plural = verbose_name
+
+
+class AddressManager(models.Manager):
+    '''地址模型管理类'''
+
+    def get_default_address(self, user):
+        '''获取用户默认地址'''
+        try:
+            address = self.objects.get(user=user, is_default=True)
+        except self.DoesNotExist:
+            # 没有默认地址
+            address = None
+        return address
 
 
 class Address(BaseModel):
