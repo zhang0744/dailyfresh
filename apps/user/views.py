@@ -4,11 +4,13 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from user.models import User, Address
+from goods.models import GoodsSKU
 from django.views.generic import View  # 类视图
 from itsdangerous import TimedJSONWebSignatureSerializer as lizer
 from itsdangerous import SignatureExpired
 from celery_tasks.tasks import send_active_email
 from utils.mixin import LoginRequiredMixin
+from django_redis import get_redis_connection
 import re
 
 
@@ -172,8 +174,20 @@ class UserInfoView(LoginRequiredMixin, View):
         '''获取用户信息'''
         user = request.user
         address = Address.objects.get_default_address(user)
+
+        '''获取浏览记录'''
+        con = get_redis_connection('default')
+
+        history_key = 'history_%d' % user.id
+        # 获取用户最新浏览的五个商品
+        sku_ids = con.lrange(history_key, 0, 4)
+
+        goods_li = []
+        for sku_id in sku_ids:
+            goods = GoodsSKU.objects.get(id=sku_id)
+            goods_li.append(goods)
         '''显示页面'''
-        return render(request, 'user_center_info.html', {'page': 'user', 'address': address})
+        return render(request, 'user_center_info.html', {'page': 'user', 'address': address, 'goods_li': goods_li})
 
 # /user/order
 

@@ -15,8 +15,8 @@ class GoodsType(BaseModel):
         verbose_name = '商品种类'
         verbose_name_plural = verbose_name
 
-        def __str__(self):
-            return self.name
+    def __str__(self):
+        return self.name
 
 
 class GoodsSKU(BaseModel):

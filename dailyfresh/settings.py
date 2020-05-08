@@ -113,6 +113,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static'
 # STATIC_ROOT = os.path.join(BASE_DIR,'static/')  # 实际环境中静态文件目录设置
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 设置静态文件目录
 
@@ -162,3 +163,8 @@ DEFAULT_FILE_STORAGE = 'utils.fdfs.storage.FDFSStorage'
 
 # 指定login页面地址
 LOGIN_URL = '/user/login'
+
+# 设置fdfs使用的client.conf文件的路径
+FDFS_CLIENT_CONF = '/etc/fdfs/client.conf'
+# 设置fdfs使用的nginx服务ip与端口
+FDFS_URL = 'http://10.32.9.63/'

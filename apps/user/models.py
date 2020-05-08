@@ -29,7 +29,7 @@ class AddressManager(models.Manager):
         '''获取用户默认地址'''
         try:
             address = self.get(user=user, is_default=True)
-        except self.DoesNotExist:
+        except:
             # 没有默认地址
             address = None
         return address
