@@ -19,6 +19,7 @@ class RegisterView(View):
 
     def get(self, request):
         '''打开注册页面'''
+        return HttpResponse(reverse('user:login'))
         return render(request, 'register.html')
 
     def post(self, request):

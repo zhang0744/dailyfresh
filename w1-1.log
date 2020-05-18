@@ -1,0 +1,1 @@
+[2020-04-30 14:34:37,661: INFO/ForkPoolWorker-1] Task celery_tasks.tasks.send_active_email[5d4d260e-c3fd-470c-bb1d-eee27537e585] succeeded in 975.5566032300703s: None
