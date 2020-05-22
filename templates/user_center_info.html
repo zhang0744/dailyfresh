@@ -20,8 +20,8 @@
 			<ul class="goods_type_list clearfix">
 				{% for good in goods_li %}
 				<li>
-					<a href="detail.html"><img src="{{ good.image.url }}"></a>
-					<h4><a href="detail.html">{{ good.name }}</a></h4>
+					<a href="{% url 'goods:detail' goods.id %}"><img src="{{ good.image.url }}"></a>
+					<h4><a href="{% url 'goods:detail' goods.id %}">{{ good.name }}</a></h4>
 					<div class="operate">
 						<span class="prize">{{ good.price }}</span>
 						<span class="unit">{{ good.price }}/{{ good.unite }}</span>
